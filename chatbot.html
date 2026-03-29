@@ -9,35 +9,68 @@
     <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
 
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
+
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
-      function ChatInput(){
+      function ChatInput({ chatMessages, setChatMessages }){
+        const [inputText, setInputText] = React.useState('');
+
+        function saveImputText(event){
+          setInputText(event.target.value);
+        }
+
+        function sendMessage(){
+          const newChatMessages = [
+            ...chatMessages,
+            {
+              message: inputText,
+              sender: 'user',
+              id: crypto.randomUUID()
+            }
+           ]
+            // Salvamos essas mensagens para que as do robô não apague elas (explicação disso no glossário)
+          setChatMessages(newChatMessages);
+
+           const response = Chatbot.getResponse(inputText);
+           setChatMessages([
+            ...newChatMessages,
+            {
+              message: response,
+              sender: 'robot',
+              id: crypto.randomUUID()
+            }
+           ]);
+
+           setInputText('');
+        }
+
         return (
           <>
             <input 
               placeholder="Send a message to ChatBot" 
               size="30"
+              onChange={saveImputText}
+              value={inputText}
             />
-            <button>Send</button>
+            <button
+              onClick={sendMessage}
+              >Send</button>
           </>
         );
       }
 
       function ChatMessage({message, sender}) {
-        // const message = props.message;
-        // const sender= props.sender;
-        // const { message, sender } = props;
+        // const message = props.message; // const sender= props.sender; -> // const { message, sender } = props;
 
-        /*
-        if (sender === 'robot') {
-          return(
-            <div>
-              <img src="robot.png" width="50" />
-              {message}
-          </div> // pq div ocupa toda uma linha
-          );
-        }
-          */
+        /*if (sender === 'robot') {
+            return(
+              <div>
+                <img src="robot.png" width="50" />
+                {message}
+              </div> // pq div ocupa toda uma linha
+            );
+          }*/
 
         return (
           <div>
@@ -45,37 +78,80 @@
               <img src="robot.png" width="50" />
             )}
             {message}
-            {sender == 'user' && (
+            {sender === 'user' && (
               <img src="user.png" width="50" />
             )}
           </div> // pq div ocupa toda uma linha
         );
       }
+      
+        function ChatMessages({ chatMessages }){
+          return(
+            <>
+              {chatMessages.map((chatMessage) => { // Arrow function = trabalha da mesma forma que uma function, mas é mais curta
+                  return (
+                      <ChatMessage 
+                        message= {chatMessage.message} // extrai a mensagem deste objeto e o salva no endereço
+                        sender= {chatMessage.sender}
+                        key= {chatMessage.id}
+                      /> // O .map vai pegar todas as mensagens e remetentes, e por meio de um array ler todos os componentes da lista e mostrar eles
+                    );
+               })} 
+            </>
+          )
+        }
 
         function App() {
+          const [chatMessages, setChatMessages] = React.useState([{ 
+            message: 'hello chatbot',
+            sender: 'user',
+            id: 'id1'
+          }, {
+            message: 'Hello! How can I help you',
+            sender:'robot',
+            id: 'id2'
+          }, {
+            message: 'can you get me todays date?',
+            sender: 'user',
+            id: 'id3'
+          }, {
+            message: 'Today is March 28',
+            sender:'robot',
+            id: 'id4'
+          }]); 
+          //const [chatMessages, setChatMessages] = array; // Se chama array destructuring (atalho para encurtar os dois debaixo) tendo a ordem como fator importante
+          //const chatMessages = array[0]; // Primeiro valor que obtemos do estado de uso, é o valor atual das mensagens de bate-papo ou os dados atuais
+          //const setChatMessagens = array[1]; // Segundo valor desse array é uma function que atualiza esses dados
           return (
             <>
-              <ChatInput />
-              <ChatMessage 
-                message="hello chatbot" 
-                sender="user" 
-                />
-              <ChatMessage message=
-                "Hello! How can I help you?" 
-                sender="robot"
-                />
-              <ChatMessage message=
-                "can you get me todays date?" 
-                sender="user"
-                />
-              <ChatMessage 
-                message="Today is March 28" 
-                sender="robot"
-                />
-            </>
+              <ChatInput
+                chatMessages={chatMessages}
+                setChatMessages={setChatMessages}
+              />
+              <ChatMessages 
+                chatMessages= {chatMessages}
+              />
+              
+            </> 
           );
         }
-      
+
+      // Glossário
+      // {} : salva qualquer tipo de valor em uma prop (incluindo function)
+      // Event Handlers : a function roda quando nos interagimos com o site
+      // Array : é uma lista de valores (matriz das aulas de matemática)
+      // <button onClick={sendMessage}>Send message</button> : roda a função quando clica
+      // Estado: São dados que estão conectados para o HTML, quando atualizamos esses dados, isso atualizará o HTML. Também usado pra salvar dados que mudam ao longo do tempo
+      /* No react não se pode atualizar os dados diretamente, porque não atualiza o HTML junto. Usamos de uma function, como essa: const setChatMessagens = array[1];
+         para ataulizar os dados pelo React no HTML */
+      // id: crypto.randomUUID() : gera uma string de ID única a cada vez que for executado
+      // Spread Operator (...) : pega os valor em um array, e copia ele dentro de um novo array (usado para alterar dados, ja q vc tem q fazer uma copia para alterar ela)
+      // No react não se usa o DOM manualmente
+      // event.target = nos da o elemento que estamos digitando
+      /* Controlled Input = Utilizando a proposta de valor, podemos controlar o texto dentro da caixa de texto, para isso usamos o value: muda o texto dentro do <input>*/
+      // No react o estado so é atualizado depois de todo o código estar finalizado
+
+
       const container = document.querySelector('.js-container');
       ReactDOM.createRoot(container).render(<App />);
     </script>
