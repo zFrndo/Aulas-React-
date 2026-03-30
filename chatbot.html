@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>ChatBot</title>
+    <link rel="stylesheet" href="chatbot.css">
   </head>
   <body>
     <div class="js-container"></div>
@@ -46,17 +47,19 @@
         }
 
         return (
-          <>
+          <div className="chat-input-container">
             <input 
               placeholder="Send a message to ChatBot" 
               size="30"
               onChange={saveImputText}
               value={inputText}
+              className="chat-input"
             />
             <button
               onClick={sendMessage}
+              className = "send-button"
               >Send</button>
-          </>
+          </div>
         );
       }
 
@@ -73,21 +76,39 @@
           }*/
 
         return (
-          <div>
+          <div className={
+            sender === 'user' // Se o remetente for igual ao usuário, vamos configurar o nome para 'chat-message-user', caso ao contrario será 'chat-message-robot'
+            ? 'chat-message-user' 
+            : 'chat-message-robot'
+          }>
             {sender === 'robot' && (
-              <img src="robot.png" width="50" />
+              <img src="robot.png" className="chat-message-profile"/>
             )}
-            {message}
+            <div className="chat-message-text">
+              {message}
+            </div>
             {sender === 'user' && (
-              <img src="user.png" width="50" />
+              <img src="user.png" className="chat-message-profile"/>
             )}
           </div> // pq div ocupa toda uma linha
         );
       }
       
-        function ChatMessages({ chatMessages }){
+        function ChatMessages({ 
+          chatMessages }){
+            const chatMessagesRef = React.useRef(null); // null é o valor inicial
+            
+            React.useEffect(() => {
+              const containerElem = chatMessagesRef.current
+              if(containerElem) {
+                containerElem.scrollTop = containerElem.scrollHeight
+              }
+            }, [chatMessages]); //Essa function roda a todo momento em que ocorrer mudanças no chatMessages, quem controla a utilização desse efeito é o array
+            //Tudo isso para rolar automaticamente 
+
           return(
-            <>
+            <div className="chat-messages-container"
+            ref={chatMessagesRef}>
               {chatMessages.map((chatMessage) => { // Arrow function = trabalha da mesma forma que uma function, mas é mais curta
                   return (
                       <ChatMessage 
@@ -97,7 +118,7 @@
                       /> // O .map vai pegar todas as mensagens e remetentes, e por meio de um array ler todos os componentes da lista e mostrar eles
                     );
                })} 
-            </>
+            </div>
           )
         }
 
@@ -123,34 +144,52 @@
           //const chatMessages = array[0]; // Primeiro valor que obtemos do estado de uso, é o valor atual das mensagens de bate-papo ou os dados atuais
           //const setChatMessagens = array[1]; // Segundo valor desse array é uma function que atualiza esses dados
           return (
-            <>
+            <div className="app-container">
+              <ChatMessages 
+                chatMessages= {chatMessages}
+              />
               <ChatInput
                 chatMessages={chatMessages}
                 setChatMessages={setChatMessages}
               />
-              <ChatMessages 
-                chatMessages= {chatMessages}
-              />
               
-            </> 
+            </div> 
           );
         }
 
-      // Glossário
-      // {} : salva qualquer tipo de valor em uma prop (incluindo function)
-      // Event Handlers : a function roda quando nos interagimos com o site
-      // Array : é uma lista de valores (matriz das aulas de matemática)
-      // <button onClick={sendMessage}>Send message</button> : roda a função quando clica
-      // Estado: São dados que estão conectados para o HTML, quando atualizamos esses dados, isso atualizará o HTML. Também usado pra salvar dados que mudam ao longo do tempo
-      /* No react não se pode atualizar os dados diretamente, porque não atualiza o HTML junto. Usamos de uma function, como essa: const setChatMessagens = array[1];
-         para ataulizar os dados pelo React no HTML */
-      // id: crypto.randomUUID() : gera uma string de ID única a cada vez que for executado
-      // Spread Operator (...) : pega os valor em um array, e copia ele dentro de um novo array (usado para alterar dados, ja q vc tem q fazer uma copia para alterar ela)
-      // No react não se usa o DOM manualmente
-      // event.target = nos da o elemento que estamos digitando
-      /* Controlled Input = Utilizando a proposta de valor, podemos controlar o texto dentro da caixa de texto, para isso usamos o value: muda o texto dentro do <input>*/
-      // No react o estado so é atualizado depois de todo o código estar finalizado
+      /*
+      Glossário
+      {} : salva qualquer tipo de valor em uma prop (incluindo function)
 
+      Event Handlers : a function roda quando nos interagimos com o site
+
+      Array : é uma lista de valores (matriz das aulas de matemática)
+
+      <button onClick={sendMessage}>Send message</button> : roda a função quando clica
+
+      | Estado: São dados que atualizam o HTML
+      | Não se pode atualizar os dados diretamente, porque não atualiza o HTML. Para isso usamos uma function como essa: const setChatMessagens = array[1];
+
+      id: crypto.randomUUID() : gera uma string de ID única a cada vez que for executado
+
+      Spread Operator (...) : pega os valor em um array, e copia ele dentro de um novo array (usado para alterar dados, ja q vc tem q fazer uma copia para alterar ela)
+
+      event.target = nos da o elemento que estamos digitando
+
+      Controlled Input = Utilizando a proposta de valor, podemos controlar o texto dentro da caixa de texto, para isso usamos o value: muda o texto dentro do <input>
+
+      No react o estado so é atualizado depois de todo o código estar finalizado
+
+      Ternary operator (ex linha 79), permite inserir uma condição "se" e "else" diretamente no JSX
+
+      | Hooks: Permite inserir funcionalidades do React em nosso componente, toda hook começa com use:
+      | useState(): Serve pra criar e controlar dados que podem mudar no seu componente
+      | useEffect(): Nos permite executar algum código depois do componente ser criado ou atualizado
+      | useRef(): Permite salvar automaticamente um elemento HTML do componente
+      | Regras: Ponha hooks no topo de um componente, não podendo estar dentro de nada como instrução if ou dentro de uma função
+
+      */
+      
 
       const container = document.querySelector('.js-container');
       ReactDOM.createRoot(container).render(<App />);

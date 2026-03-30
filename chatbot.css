@@ -1,0 +1,151 @@
+    body{
+        font-family: Arial;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    
+    .send-button {
+        background-color: rgb(25, 135, 84);
+        color: white;
+        padding: 12px 20px;
+        margin-left: 10px;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .chat-input {
+        padding: 12px 15px;
+        border-radius: 10px;
+        border-width: 1px;
+        font-size: 15px;
+
+        flex-grow: 1;
+
+    }  
+
+    .chat-input-container{
+        display: flex;
+        margin-bottom: 60px;
+    }
+
+    .app-container{
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-message-user{
+        display: flex;
+        justify-content: end;
+        align-items: start;
+    }
+
+    .chat-message-robot{
+        display: flex;
+        align-items: start;
+    }
+
+    .chat-message-text{
+        background-color: rgb(238, 238, 238);
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
+        margin-bottom: 20px;
+        max-width: 300px;
+    }
+
+    .chat-message-profile{
+        width: 45px;
+    }
+
+    .chat-messages-container {
+        flex-grow: 1;
+        margin-top: 20px;
+        overflow: scroll;
+        scrollbar-width: none;
+    }
+
+    /*
+      Padding: O espaço dentro de um elemento
+      Ex: padding: 12px 20px; -> O 1º n° é na vertical e o 2º n° é na horizontal
+
+      Margin: O espaço na parte de fora de um elemento
+      margin-left: 10px -> Distanciamento da esquerda | margin-right: 10px -> Distanciamento da direita
+
+      Border: Para eliminar as bordas de um elemento
+      Ex: border: none;
+
+      Border-radius: Usado para arredondar a borda de um elemento
+      Ex: border-radius: 10px;
+
+      Font-size: Utilizado para controlar o tamanho da fonte
+      Ex: font-size: 15px;
+
+      Cursor: Define o tipo de ponteiro quando o mouse passa no elemento
+      Ex: cursor: pointer;
+
+      RGB: Definir a cor do elemento, controlando o vermelho, verde e azul (seguindo essa mesma ordem)
+      Ex:background-color: rgb(25, 135, 84);
+
+      Border-width: Define o tamanho da borda do elemento
+      Ex: border-width: 1px;
+      
+      |Flexbox: Permite criar um layout flexível. Para usar o flexbox é necessário seguir 3 regras:
+      |1. Create container around elements | 2. Add display: flex; to container | 3.Use flexbox features
+      |Layout: Significa como os elementos dispostos estão posicionados no site
+
+      Display: Define como um elemento HTML é renderizado e se comporta no layout
+      Ex: display: flex -> Deixa ele flexivel, se tornando um Flexbox
+
+      Flex-grow: Faz um elemento crescer e ocupar o espaço restante ao redimencionar o navegador
+      Ex: flex-grow: 1; 
+
+      Max-width: Define a largura máxima que um elemento pode ter
+      Ex: max-width: 600px;
+
+      Margin-left e Margin-right: Utilizadas juntas para centralizar um elemento, pois ocupa o espaço da direita e esquerda
+      Ex: margin-left: auto; | margin-right: auto;
+
+      Justify-content: Controla como os elementos são exibidos horizontalmente
+      Ex: justify-content: end; -> Elementos vão ficar no fim da linha ou à direita
+
+      | Quando um bloco de elemento (tipo <div>) está dentro de um flex box
+      | Ele não ocupa a linha toda (como a <div> ocupa)
+      | Só ocupa o espaço necessário, o espaço em que ela precisa
+
+      Font-family: Usado para escolher o tipo da fonte
+      Ex: font-family: Arial;
+
+      Margin-bottom: Define o espaçamento externo na parte inferior de um elemento, criando uma distância entre ele e o próximo elemento abaixo
+      Ex: margin-bottom: 20px;
+
+      Align-items: Controla como os elementos são exibidos verticalmente (por padrão vem em stretch (esticado))
+      Ex: align-items: start; -> Exibirá os elementos no começo ou no topo verticalmente 
+
+      Height: Serve pra definir a altura de um elemento
+      Ex: height: 100vh; -> vh = viewport height (a altura do navegador/ parte da página que está visível), logo 100vh é 100% da altura do navegador
+
+      Flex-direction: Define a direção da posição de um elemento (ele é row por padrão, logo fica na horizontal)
+      Ex: flex-direction: column; -> posiciona os elementos em uma coluna vertical
+
+      Margin-top: Define o espaço externo acima de um elemento
+      Ex: margin-top: 20px;
+
+      Overflow: Controla o que acontece quando o conteúdo é maior que o container
+      Ex: overflow: scroll; -> Quando acontece, voce pode scrollar ao inves dele empurrar para baixo
+
+      Scrollbar-width: Define a espessura da barra de rolagem de um elemento
+      Ex: scrollbar-width: none; -> Tira a barra de rolagem
+
+      OBS: Não da para estilizar um fragmento
+      OBS: A página do navegador tem uma borda padrão de 8px. Quando coloca 100vh aparece a barra do lado para descer a tela, porque ta ocupando 100% mais 8px de borda. 
+      Para remover essa borda padrão extra, você coloca no body margin-top: 0px; | margin-bottom: 0px;
+      */
+
